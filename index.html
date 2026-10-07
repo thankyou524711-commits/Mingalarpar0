@@ -6,21 +6,55 @@
     <title>မင်္ဂလာပါ STUDIO</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/font-awesome/6.5.1/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&display=swap');
         * { font-family: 'Padauk', sans-serif; }
     </style>
 </head>
-<body class="bg-slate-50 min-h-screen p-4 flex flex-col items-center">
+<body class="bg-slate-50 min-h-screen p-4 flex flex-col items-center justify-start relative">
 
-    <div class="w-full max-w-md space-y-4 relative">
+    <!-- Modal Background Layer -->
+    <div id="modalOverlay" onclick="closeModals()" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 transition-opacity"></div>
+
+    <!-- Menu Drawer / Modal -->
+    <div id="menuModal" class="hidden fixed top-16 left-4 right-4 bg-white rounded-3xl p-5 shadow-2xl z-50 border border-slate-100 space-y-3">
+        <div class="flex justify-between items-center border-b pb-2">
+            <h3 class="font-bold text-slate-800">မင်္ဂလာပါ မီနူး</h3>
+            <button onclick="closeModals()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+        <div class="space-y-2 text-sm text-slate-600">
+            <button onclick="alert('AssemblyAI API Key ကို အောက်ပါ အကွက်ထဲတွင် ထည့်သွင်းပါ'); closeModals();" class="w-full text-left p-2.5 hover:bg-slate-50 rounded-xl flex items-center gap-2">
+                <i class="fa-solid fa-key text-indigo-500"></i> API Key ပြင်ဆင်ရန်
+            </button>
+            <button onclick="location.reload()" class="w-full text-left p-2.5 hover:bg-slate-50 rounded-xl flex items-center gap-2 text-rose-500">
+                <i class="fa-solid fa-rotate-left"></i> အသစ်ပြန်စမည်
+            </button>
+        </div>
+    </div>
+
+    <!-- Guide Modal -->
+    <div id="guideModal" class="hidden fixed top-20 left-4 right-4 bg-white rounded-3xl p-5 shadow-2xl z-50 border border-slate-100 space-y-3">
+        <div class="flex justify-between items-center border-b pb-2">
+            <h3 class="font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-regular fa-circle-question text-indigo-600"></i> အသုံးပြုနည်း လမ်းညွှန်
+            </h3>
+            <button onclick="closeModals()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+        <div class="text-xs text-slate-600 space-y-2 leading-relaxed">
+            <p>1️⃣ <b>Step 1:</b> ဗီဒီယို ဖိုင် ရွေးချယ်ပြီး အသံထုတ်ယူပါ[span_2](start_span)[span_2](end_span)။</p>
+            <p>2️⃣ <b>Step 2:</b> မူရင်းစာသားများကို စစ်ဆေးပါ[span_3](start_span)[span_3](end_span)။</p>
+            <p>3️⃣ <b>Step 3:</b> မြန်မာဘာသာသို့ ပြန်ဆိုပါ[span_4](start_span)[span_4](end_span)။</p>
+            <p>4️⃣ <b>Step 4:</b> အသံသစ်ထွက်ရှိလာသော ရလဒ်ကို ရယူပါ[span_5](start_span)[span_5](end_span)။</p>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="w-full max-w-md space-y-4">
 
         <!-- Top Header Navigation -->
         <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-100 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <button onclick="toggleMenu()" class="w-10 h-10 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-center text-slate-700 transition">
+                <button onclick="toggleModal('menuModal')" class="w-10 h-10 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-center text-slate-700 transition">
                     <i class="fa-solid fa-bars text-lg"></i>
                 </button>
                 <div>
@@ -31,33 +65,22 @@
                     <p class="text-[11px] text-slate-400 font-semibold mt-0.5">AI Video Recap & Dubbing</p>
                 </div>
             </div>
-            <button onclick="showGuide()" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-600 text-xs px-3.5 py-2 rounded-full font-bold flex items-center gap-1.5 transition">
+            <button onclick="toggleModal('guideModal')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-600 text-xs px-3.5 py-2 rounded-full font-bold flex items-center gap-1.5 transition">
                 <i class="fa-regular fa-circle-question text-sm"></i>
                 <span>လမ်းညွှန်</span>
-            </button>
-        </div>
-
-        <!-- Hidden Side Menu -->
-        <div id="sideMenu" class="hidden bg-white rounded-3xl p-4 shadow-lg border border-slate-100 space-y-2">
-            <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">မေနူး မိုဒြူးများ</div>
-            <button onclick="alert('AssemblyAI API Key ကို စတင် သတ်မှတ်ပါ')" class="w-full text-left px-3 py-2 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-50 flex items-center gap-2">
-                <i class="fa-solid fa-key text-indigo-500"></i> API Settings
-            </button>
-            <button onclick="alert('Mingalarpar Studio Version 1.0.0')" class="w-full text-left px-3 py-2 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-50 flex items-center gap-2">
-                <i class="fa-solid fa-circle-info text-indigo-500"></i> App အကြောင်း
             </button>
         </div>
 
         <!-- Status Card -->
         <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-100 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <span class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></span>
+                <span id="statusDot" class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></span>
                 <div>
                     <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">STATUS</p>
-                    <p class="text-sm font-bold text-slate-700">လက်ရှိ ပရောဂျက် <span id="projectStatus" class="text-indigo-500 font-normal">(မရှိသေးပါ)</span></p>
+                    <p id="statusText" class="text-sm font-bold text-slate-700">လက်ရှိ ပရောဂျက် <span class="text-indigo-500 font-normal">(မရှိသေးပါ)</span></p>
                 </div>
             </div>
-            <button onclick="resetApp()" class="border border-rose-300 text-rose-500 text-xs px-3.5 py-1.5 rounded-full font-bold flex items-center gap-1 hover:bg-rose-50 transition">
+            <button onclick="location.reload()" class="border border-rose-300 text-rose-500 text-xs px-3.5 py-1.5 rounded-full font-bold flex items-center gap-1 hover:bg-rose-50 transition">
                 <i class="fa-solid fa-rotate-left"></i>
                 <span>အသစ်ပြန်စမည်</span>
             </button>
@@ -65,42 +88,38 @@
 
         <!-- Step Navigation Pills -->
         <div class="grid grid-cols-4 gap-2">
-            <button id="pill1" onclick="switchStep(1)" class="bg-indigo-600 text-white p-2.5 rounded-2xl text-center shadow-md shadow-indigo-100 transition">
+            <button onclick="switchStep(1)" id="stepTab1" class="bg-indigo-600 text-white p-2.5 rounded-2xl text-center shadow-md shadow-indigo-100 transition">
                 <p class="text-xs font-bold">Step 1</p>
                 <p class="text-[10px] opacity-90">Upload</p>
             </button>
-            <button id="pill2" onclick="switchStep(2)" class="bg-slate-100 text-slate-400 p-2.5 rounded-2xl text-center transition">
+            <button onclick="switchStep(2)" id="stepTab2" class="bg-slate-100 text-slate-400 p-2.5 rounded-2xl text-center transition">
                 <p class="text-xs font-bold">Step 2</p>
                 <p class="text-[10px]">Source</p>
             </button>
-            <button id="pill3" onclick="switchStep(3)" class="bg-slate-100 text-slate-400 p-2.5 rounded-2xl text-center transition">
+            <button onclick="switchStep(3)" id="stepTab3" class="bg-slate-100 text-slate-400 p-2.5 rounded-2xl text-center transition">
                 <p class="text-xs font-bold">Step 3</p>
                 <p class="text-[10px]">Burmese</p>
             </button>
-            <button id="pill4" onclick="switchStep(4)" class="bg-slate-100 text-slate-400 p-2.5 rounded-2xl text-center transition">
+            <button onclick="switchStep(4)" id="stepTab4" class="bg-slate-100 text-slate-400 p-2.5 rounded-2xl text-center transition">
                 <p class="text-xs font-bold">Step 4</p>
                 <p class="text-[10px]">Result</p>
             </button>
         </div>
 
-        <!-- Main Step Cards Area -->
-
-        <!-- STEP 1 -->
-        <div id="step1" class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100 space-y-4">
+        <!-- Dynamic Content Card -->
+        <div id="contentCard" class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100 space-y-4">
+            
+            <!-- Step Header -->
             <div class="space-y-1">
                 <div class="flex items-center gap-2">
-                    <span class="w-6 h-6 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-xs font-bold">1</span>
-                    <h2 class="text-base font-bold text-slate-800">Video တင်ပါ (Upload File)</h2>
+                    <span id="stepNumber" class="w-6 h-6 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-xs font-bold">1</span>
+                    <h2 id="stepTitle" class="text-base font-bold text-slate-800">Video တင်ပါ (Upload File)</h2>
                 </div>
-                <p class="text-xs text-slate-400 pl-8">MP4, MOV, WEBM သို့မဟုတ် MKV ဖိုင်တင်ပါ</p>
+                <p id="stepSubtitle" class="text-xs text-slate-400 pl-8">MP4, MOV, WEBM သို့မဟုတ် MKV ဖိုင်တင်ပါ</p>
             </div>
 
-            <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200">
-                <label class="block text-xs font-bold text-slate-600 mb-1">AssemblyAI API Key</label>
-                <input type="password" id="apiKey" placeholder="AssemblyAI API Key ထည့်ပါ" class="w-full p-2 bg-white border border-slate-300 rounded-xl text-xs focus:outline-none focus:border-indigo-500">
-            </div>
-
-            <div class="border-2 border-dashed border-indigo-200 bg-indigo-50/20 rounded-2xl p-8 flex flex-col items-center justify-center gap-2 relative text-center">
+            <!-- Upload Area -->
+            <div id="uploadArea" class="border-2 border-dashed border-indigo-200 bg-indigo-50/20 rounded-2xl p-8 flex flex-col items-center justify-center gap-2 relative text-center">
                 <input type="file" id="videoInput" accept="video/*" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full">
                 <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center text-xl mb-1">
                     <i class="fa-solid fa-cloud-arrow-up"></i>
@@ -109,50 +128,79 @@
                 <p class="text-xs text-slate-400">Max file size: 100MB</p>
             </div>
 
-            <button onclick="processStep1()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-2xl text-sm transition shadow-md flex items-center justify-center gap-2">
-                <span>Step 1: အသံထုတ်မည် (Next)</span>
+            <!-- Next Button -->
+            <button onclick="handleNextStep()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-2xl text-sm transition shadow-sm flex items-center justify-center gap-2">
+                <span id="btnText">Step 1: အသံထုတ်မည် (Next)</span>
                 <i class="fa-solid fa-arrow-right text-xs"></i>
             </button>
-        </div>
-
-        <!-- STEP 2 -->
-        <div id="step2" class="hidden bg-white rounded-3xl p-5 shadow-sm border border-slate-100 space-y-4">
-            <div class="flex items-center gap-2">
-                <span class="w-6 h-6 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-xs font-bold">2</span>
-                <h2 class="text-base font-bold text-slate-800">မူရင်းအသံ စာသားပြောင်းခြင်း (Transcription)</h2>
-            </div>
-            <div class="bg-slate-50 p-4 rounded-2xl text-xs text-slate-600 border border-slate-200" id="step2Result">
-                Video Upload မလုပ်ရသေးပါ...
-            </div>
-            <button onclick="switchStep(3)" class="w-full bg-indigo-600 text-white font-bold py-3.5 rounded-2xl text-sm transition">Step 3: မြန်မာဘာသာသို့ ပြန်မည် (Next)</button>
-        </div>
-
-        <!-- STEP 3 -->
-        <div id="step3" class="hidden bg-white rounded-3xl p-5 shadow-sm border border-slate-100 space-y-4">
-            <div class="flex items-center gap-2">
-                <span class="w-6 h-6 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-xs font-bold">3</span>
-                <h2 class="text-base font-bold text-slate-800">မြန်မာဘာသာ ပြန်ဆိုချက် (Burmese Dubing)</h2>
-            </div>
-            <div class="bg-slate-50 p-4 rounded-2xl text-xs text-slate-600 border border-slate-200">
-                မြန်မာဘာသာ ပြန်ဆိုချက်များ ဒီနေရာတွင် ပေါ်လာမည်...
-            </div>
-            <button onclick="switchStep(4)" class="w-full bg-indigo-600 text-white font-bold py-3.5 rounded-2xl text-sm transition">Step 4: ရလဒ် ကြည့်မည် (Result)</button>
-        </div>
-
-        <!-- STEP 4 -->
-        <div id="step4" class="hidden bg-white rounded-3xl p-5 shadow-sm border border-slate-100 space-y-4">
-            <div class="flex items-center gap-2">
-                <span class="w-6 h-6 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-xs font-bold">4</span>
-                <h2 class="text-base font-bold text-slate-800">ရလဒ်နှင့် ဒေါင်းလုဒ် (Result)</h2>
-            </div>
-            <div class="bg-emerald-50 text-emerald-700 p-4 rounded-2xl text-xs border border-emerald-200 font-bold text-center">
-                <i class="fa-solid fa-circle-check text-lg mb-1 block"></i>
-                လုပ်ဆောင်ချက် အောင်မြင်စွာ ပြီးဆုံးပါပြီ။
-            </div>
         </div>
 
     </div>
 
     <!-- Bottom Sparkle Icon -->
     <div class="mt-8 flex justify-center">
-        <div class="w-12 h-12
+        <div class="w-12 h-12 bg-slate-900 rounded-full flex items-center justify-center shadow-lg">
+            <i class="fa-solid fa-wand-magic-sparkles text-amber-400 text-lg"></i>
+        </div>
+    </div>
+
+    <!-- JavaScript Actions -->
+    <script>
+        let currentStep = 1;
+
+        function toggleModal(id) {
+            closeModals();
+            document.getElementById('modalOverlay').classList.remove('hidden');
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function closeModals() {
+            document.getElementById('modalOverlay').classList.add('hidden');
+            document.getElementById('menuModal').classList.add('hidden');
+            document.getElementById('guideModal').classList.add('hidden');
+        }
+
+        function switchStep(step) {
+            currentStep = step;
+            for(let i=1; i<=4; i++) {
+                const tab = document.getElementById(`stepTab${i}`);
+                if(i === step) {
+                    tab.className = "bg-indigo-600 text-white p-2.5 rounded-2xl text-center shadow-md shadow-indigo-100 transition";
+                } else {
+                    tab.className = "bg-slate-100 text-slate-400 p-2.5 rounded-2xl text-center transition";
+                }
+            }
+
+            const titles = ["", "Video တင်ပါ (Upload File)", "မူရင်းစာသား (Source Transcript)", "မြန်မာဘာသာပြန် (Burmese Dubbing)", "ရလဒ်ဗီဒီယို (Final Result)"];
+            const subtitles = ["", "MP4, MOV, WEBM သို့မဟုတ် MKV ဖိုင်တင်ပါ", "အသံဖိုင်မှ စာသားများကို စစ်ဆေးပါ", "မြန်မာဘာသာသို့ ပြန်ဆိုချက်များ", "ဖန်တီးထားသော ဗီဒီယို ရယူပါ"];
+            
+            document.getElementById('stepNumber').innerText = step;
+            document.getElementById('stepTitle').innerText = titles[step];
+            document.getElementById('stepSubtitle').innerText = subtitles[step];
+            document.getElementById('btnText').innerText = `Step ${step}: ဆက်သွားမည် (Next)`;
+        }
+
+        document.getElementById('videoInput').addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                document.getElementById('fileNameDisplay').textContent = e.target.files[0].name;
+                document.getElementById('statusText').innerHTML = `ဖိုင် ရွေးချယ်ပြီးပါပြီ: <span class="text-indigo-600">${e.target.files[0].name}</span>`;
+            }
+        });
+
+        function handleNextStep() {
+            if(currentStep === 1) {
+                const file = document.getElementById('videoInput').files[0];
+                if (!file) {
+                    alert('ကျေးဇူးပြု၍ Video File တစ်ခု ရွေးချယ်ပေးပါ');
+                    return;
+                }
+            }
+            if(currentStep < 4) {
+                switchStep(currentStep + 1);
+            } else {
+                alert('လုပ်ဆောင်ချက် ပြီးဆုံးပါပြီ။');
+            }
+        }
+    </script>
+</body>
+</html>
