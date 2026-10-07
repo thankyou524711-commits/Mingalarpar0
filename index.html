@@ -1,1 +1,74 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mingalarpar - AI Dubbing Studio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-white min-h-screen p-4 flex flex-col items-center">
+  <div class="max-w-md w-full bg-slate-800 rounded-xl p-6 shadow-xl border border-slate-700">
+    <h1 class="text-2xl font-bold text-center text-teal-400 mb-2">Mingalarpar 🇲🇲</h1>
+    <p class="text-xs text-slate-400 text-center mb-6">AI Video Recap & Burmese Dubbing</p>
+
+    <!-- API Key Section -->
+    <div class="mb-4">
+      <label class="block text-sm text-slate-300 mb-1">AssemblyAI API Key</label>
+      <input type="password" id="apiKey" placeholder="Enter API Key" class="w-full p-2 bg-slate-700 rounded border border-slate-600 text-white text-sm">
+    </div>
+
+    <!-- Upload Section -->
+    <div class="mb-6">
+      <label class="block text-sm text-slate-300 mb-1">Upload Video</label>
+      <input type="file" id="videoInput" accept="video/*" class="w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-teal-500 file:text-slate-900 hover:file:bg-teal-400">
+    </div>
+
+    <!-- Status & Output -->
+    <button onclick="processVideo()" class="w-full bg-teal-500 hover:bg-teal-400 text-slate-900 font-bold py-2 rounded-lg transition duration-200 mb-4">Start Processing</button>
+    
+    <div id="status" class="text-sm text-center text-teal-300 hidden mb-4">Processing...</div>
+    <div id="output" class="bg-slate-900 p-4 rounded-lg text-sm text-slate-200 hidden border border-slate-700 min-h-[100px]"></div>
+  </div>
+
+  <script>
+    async function processVideo() {
+      const key = document.getElementById('apiKey').value;
+      const file = document.getElementById('videoInput').files[0];
+      const status = document.getElementById('status');
+      const output = document.getElementById('output');
+
+      if(!key || !file) {
+        alert("Please enter API Key and select a video.");
+        return;
+      }
+
+      status.classList.remove('hidden');
+      status.innerText = "Uploading & Transcribing...";
+
+      try {
+        const uploadRes = await fetch('https://api.assemblyai.com/v2/upload', {
+          method: 'POST',
+          headers: { 'authorization': key },
+          body: file
+        });
+        const uploadData = await uploadRes.json();
+        
+        status.innerText = "Processing Transcript...";
+        const transcriptRes = await fetch('https://api.assemblyai.com/v2/transcript', {
+          method: 'POST',
+          headers: { 'authorization': key, 'content-type': 'application/json' },
+          body: JSON.stringify({ audio_url: uploadData.upload_url })
+        });
+        const transcriptData = await transcriptRes.json();
+        
+        output.classList.remove('hidden');
+        output.innerText = "Transcript ID: " + transcriptData.id + "\nStatus: " + transcriptData.status;
+        status.innerText = "Completed!";
+      } catch(e) {
+        status.innerText = "Error: " + e.message;
+      }
+    }
+  </script>
+</body>
+</html>
 
