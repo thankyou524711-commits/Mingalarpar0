@@ -4,22 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>မင်္ဂလာပါ STUDIO</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&display=swap');
         * { font-family: 'Padauk', sans-serif; }
     </style>
 </head>
-<body class="bg-slate-50 min-h-screen p-4 flex flex-col items-center">
+<body class="bg-slate-50 min-h-screen p-4 flex flex-col items-center justify-start">
 
     <div class="w-full max-w-md space-y-4">
 
         <!-- Top Header Navigation -->
         <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-100 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <button class="w-10 h-10 bg-slate-100 rounded-2xl flex items-center justify-center text-slate-600">
-                    <i class="fa-solid fa-bars text-lg"></i>
+                <button class="w-10 h-10 bg-slate-100 rounded-2xl flex items-center justify-center text-slate-700">
+                    <svg class="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
                 <div>
                     <div class="flex items-center gap-2">
@@ -30,7 +35,8 @@
                 </div>
             </div>
             <button class="bg-indigo-50 text-indigo-600 text-xs px-3.5 py-2 rounded-full font-bold flex items-center gap-1.5">
-                <i class="fa-regular fa-circle-question text-sm"></i> လမ်းညွှန်
+                <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span>လမ်းညွှန်</span>
             </button>
         </div>
 
@@ -44,7 +50,8 @@
                 </div>
             </div>
             <button onclick="location.reload()" class="border border-rose-300 text-rose-500 text-xs px-3.5 py-1.5 rounded-full font-bold flex items-center gap-1 hover:bg-rose-50 transition">
-                <i class="fa-solid fa-rotate-left"></i> အသစ်ပြန်စမည်
+                <svg class="w-3.5 h-3.5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                <span>အသစ်ပြန်စမည်</span>
             </button>
         </div>
 
@@ -84,16 +91,16 @@
             <div class="border-2 border-dashed border-indigo-200 bg-indigo-50/20 rounded-2xl p-8 flex flex-col items-center justify-center gap-2 relative text-center">
                 <input type="file" id="videoInput" accept="video/*" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full">
                 <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center text-xl mb-1">
-                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 0115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
                 </div>
                 <p id="fileNameDisplay" class="text-sm font-bold text-slate-700">နှိပ်၍ Video File ရွေးချယ်ပါ</p>
                 <p class="text-xs text-slate-400">Max file size: 100MB</p>
             </div>
 
             <!-- Next Button -->
-            <button onclick="startProcess()" class="w-full bg-indigo-300 hover:bg-indigo-600 text-white font-bold py-3.5 rounded-2xl text-sm transition shadow-sm flex items-center justify-center gap-2">
+            <button onclick="startProcess()" class="w-full bg-indigo-400 hover:bg-indigo-600 text-white font-bold py-3.5 rounded-2xl text-sm transition shadow-sm flex items-center justify-center gap-2">
                 <span>Step 1: အသံထုတ်မည် (Next)</span>
-                <i class="fa-solid fa-arrow-right text-xs"></i>
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
             </button>
         </div>
 
@@ -102,7 +109,9 @@
     <!-- Bottom Sparkle Icon -->
     <div class="mt-8 flex justify-center">
         <div class="w-12 h-12 bg-slate-900 rounded-full flex items-center justify-center shadow-lg">
-            <i class="fa-solid fa-sparkles text-amber-400 text-lg"></i>
+            <svg class="w-6 h-6 text-amber-400" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
+            </svg>
         </div>
     </div>
 
